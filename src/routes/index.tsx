@@ -10,12 +10,12 @@ const MovieRoutes: React.FC = () => (
       // headerShown: false,
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#7159c1',
+        backgroundColor: '#E50914',
       },
       cardStyle: { backgroundColor: '#312e38' },
     }}
   >
-    <Movie.Screen name="MovieList" component={MovieList} />
+    <Movie.Screen name="Lista de Filmes" component={MovieList} />
   </Movie.Navigator>
 );
 
