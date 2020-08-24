@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Feather';
 
-import { Image, View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import {
+  Image,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Button,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import logoImg from '../../assets/logo.png';
 import api from '../../services/api';
 
 import {
+  Input,
   Container,
   Card,
   Poster,
@@ -30,10 +40,32 @@ interface Genre {
   name: string;
 }
 
-const MovieList: React.FC = () => {
+const MovieList: React.FC = ({ navigation }) => {
+  const { navigate } = useNavigation();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
+  const [count, setCount] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        // <Button
+        //   onPress={() => alert('This is a button!')}
+        //   title="Info"
+        //   color="#fff"
+        // />
+        <TouchableWithoutFeedback onPress={() => navigate('Busca')}>
+          <Icon
+            name="search"
+            size={20}
+            color="#fff"
+            style={{ paddingRight: 16, color: 'white' }}
+          />
+        </TouchableWithoutFeedback>
+      ),
+    });
+  }, [navigate, navigation, setCount]);
 
   const searchMovies = async (pageNumber = 1) => {
     // const { data } = await api.get<Movie[]>('discover/movie', {
@@ -42,7 +74,7 @@ const MovieList: React.FC = () => {
         api_key: 'b97006b0440ca06b9e06743ce41b0426',
         language: 'pt-BR',
         sort_by: 'popularity.desc',
-        include_adult: false,
+        include_adult: 'false',
         page: pageNumber,
       },
     });
@@ -55,7 +87,7 @@ const MovieList: React.FC = () => {
 
     setPage(response.data.page);
     setMovies(response.data.results);
-    // setTotalPages(response.data.total_pages);
+    setTotalPages(response.data.total_pages);
   };
   useEffect(() => {
     searchMovies();
@@ -73,10 +105,17 @@ const MovieList: React.FC = () => {
     searchMovies(pageNumber);
   };
 
+  const handleNavigateToDetailsPages = (movie: Movie) => {
+    navigate('MovieDetails', {
+      movie,
+      name: movie.title,
+    });
+  };
+
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 24 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 8 }}
         showsVerticalScrollIndicator={false}
       >
         <Container>
@@ -84,7 +123,7 @@ const MovieList: React.FC = () => {
             <Card
               key={movie.id}
               onPress={() => {
-                console.log('TESTE');
+                handleNavigateToDetailsPages(movie);
               }}
             >
               <View>

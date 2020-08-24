@@ -1,39 +1,50 @@
 import styled from 'styled-components/native';
 
+export const Input = styled.TextInput.attrs({
+  placeholderTextColor: 'red',
+})`
+  border-radius: 15px;
+  background: #312e38;
+  margin: 16px;
+  color: #fff;
+  padding: 0 10px;
+  height: 50px;
+`;
+
 export const Container = styled.View`
   flex: 1;
   margin-top: 20px;
   width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* background: #312e38; */
+  justify-content: space-between;
 `;
 
-export const Card = styled.TouchableOpacity`
-  height: 150px;
-  width: 100%;
-  border-radius: 15px;
-  background: #312e38;
-  flex-direction: row;
-  margin-bottom: 20px;
+export const ViewPoster = styled.TouchableOpacity`
+  flex-direction: column;
 `;
 
 export const Poster = styled.Image`
   /* width: 100; */
   /* height: 150; */
   width: 100px;
-  height: 150px;
+  height: 160px;
   /* border-radius: 15px; */
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
   /* left: 5px; */
   justify-content: center;
   align-items: center;
+  margin: 3px;
+  background: #312e38;
+  /*  */
 `;
 
 export const Title = styled.Text`
-  font-size: 24px;
+  width: 100px;
   color: #f4ede8;
   margin: 0 6px;
   /* padding: 2px; */
-  font-size: 18px;
+  font-size: 10px;
   /* flex: 0.8; */
   /* align-self: center; */
   flex-wrap: wrap;
