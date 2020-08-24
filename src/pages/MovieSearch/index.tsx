@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import api from '../../services/api';
 
 import {
@@ -117,6 +117,7 @@ const MovieSearch: React.FC = () => {
   const [search, setSearch] = useState('');
 
   const removeAccentuation = (str: string) => {
+    console.log('entrou');
     const accentsMap = {
       a: 'á|à|ã|â|À|Á|Ã|Â',
       e: 'é|è|ê|É|È|Ê',
@@ -126,10 +127,11 @@ const MovieSearch: React.FC = () => {
       c: 'ç|Ç',
       n: 'ñ|Ñ',
     };
-    return Object.keys(accentsMap).reduce(
+    const word = Object.keys(accentsMap).reduce(
       (acc, cur) => acc.replace(new RegExp(accentsMap[cur], 'g'), cur),
       str,
     );
+    return word.toLowerCase();
   };
 
   const searchMoviesByGenres = async (pageNumber = 1, id: number) => {
@@ -176,11 +178,15 @@ const MovieSearch: React.FC = () => {
     setSearch(stringInput);
     setPage(pag);
 
-    const stringSearch = removeAccentuation(stringInput).toLowerCase();
+    const stringSearch = removeAccentuation(stringInput);
+
+    console.log(stringSearch, 'word');
 
     const genreObject = genreName.find(genre => genre.name === stringSearch);
+    console.log(genreObject);
 
     if (genreObject !== undefined) {
+      console.log(genreObject.id);
       searchMoviesByGenres(pag, genreObject.id);
     } else {
       searchMoviesByTitle(pag, stringSearch);
@@ -205,11 +211,13 @@ const MovieSearch: React.FC = () => {
 
   return (
     <>
-      <Input
-        style={{ color: '#fff' }}
-        placeholder="Busca"
-        onChangeText={string => searchMovies(string, page)}
-      />
+      <View accessible>
+        <Input
+          style={{ color: '#fff' }}
+          placeholder="Busca filme ou gênero"
+          onChangeText={string => searchMovies(string, page)}
+        />
+      </View>
 
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 8 }}
@@ -218,18 +226,28 @@ const MovieSearch: React.FC = () => {
         <Container>
           {movies.map(movie => (
             <ViewPoster
+              accessible
+              // accessibilityLabel="Click aqui para ir para detalhes do filme"
+              // accessibilityHint="Click aqui para ir para detalhes do filme"
               key={movie.id}
               onPress={() => {
                 handleNavigateToDetailsPages(movie);
               }}
             >
               <Poster
+                accessible
+                accessibilityHint={`poster do filme ${movie.title}`}
                 key={movie.id}
                 source={{
                   uri: `http://image.tmdb.org/t/p/w500${movie.poster_path}`,
                 }}
               />
-              <Title>{movie.title}</Title>
+              <Title
+                accessibilityHint={`título  do filme ${movie.title}`}
+                accessibilityRole="text"
+              >
+                {movie.title}
+              </Title>
             </ViewPoster>
           ))}
         </Container>

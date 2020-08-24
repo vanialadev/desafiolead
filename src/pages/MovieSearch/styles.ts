@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: 'red',
@@ -23,13 +24,14 @@ export const Container = styled.View`
 
 export const ViewPoster = styled.TouchableOpacity`
   flex-direction: column;
+  padding: 10px;
 `;
 
 export const Poster = styled.Image`
   /* width: 100; */
   /* height: 150; */
-  width: 100px;
-  height: 160px;
+  width: 150px;
+  height: 260px;
   /* border-radius: 15px; */
   /* left: 5px; */
   justify-content: center;
@@ -55,7 +57,7 @@ export const ButtonsPages = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: 8px 16px ${16 + getBottomSpace()}px;
 `;
 export const ButtonPages = styled.TouchableOpacity`
   border-radius: 10px;

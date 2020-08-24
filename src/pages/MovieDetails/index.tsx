@@ -64,22 +64,40 @@ const MovieDetails: React.FC = ({ route }) => {
         showsVerticalScrollIndicator={false}
       >
         <Poster
+          accessibilityHint={`poster do filme ${movie.title}`}
           source={{
             uri: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
           }}
         />
-        <Title>{movie.title}</Title>
-        <Overview>{movie.overview}</Overview>
+        <Title accessibilityHint={`título  do filme ${movie.title}`}>
+          {movie.title}
+        </Title>
+        <Overview accessibilityRole="text">{movie.overview}</Overview>
         <Rating>
-          <Icon name="star" size={20} color="#E50914" />
+          <Icon
+            name="star"
+            size={20}
+            color="#E50914"
+            accessibilityHint="média de avaliação"
+          />
           <AverageText>{movie.vote_average}</AverageText>
         </Rating>
         <Popularity>
-          <Icon name="user" size={20} color="#E50914" />
+          <Icon
+            name="user"
+            size={20}
+            color="#E50914"
+            accessibilityHint="popularidade do filme"
+          />
           <PopularityText>{movie.popularity}</PopularityText>
         </Popularity>
         <Genre>
-          <Icon name="film" size={20} color="#E50914" />
+          <Icon
+            accessibilityHint="gêneros do filme"
+            name="film"
+            size={20}
+            color="#E50914"
+          />
           {movie.genres &&
             movie.genres.map(genre => (
               <GenreText key={genre.id}>{genre.name}</GenreText>

@@ -2,19 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
-import {
-  Image,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Button,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import logoImg from '../../assets/logo.png';
+import { View, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import api from '../../services/api';
 
 import {
-  Input,
   Container,
   Card,
   Poster,
@@ -45,17 +36,14 @@ const MovieList: React.FC = ({ navigation }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [count, setCount] = React.useState(0);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        // <Button
-        //   onPress={() => alert('This is a button!')}
-        //   title="Info"
-        //   color="#fff"
-        // />
-        <TouchableWithoutFeedback onPress={() => navigate('Busca')}>
+        <TouchableWithoutFeedback
+          onPress={() => navigate('Busca')}
+          accessibilityLabel="Click aqui para ir para página de busca"
+        >
           <Icon
             name="search"
             size={20}
@@ -65,10 +53,9 @@ const MovieList: React.FC = ({ navigation }) => {
         </TouchableWithoutFeedback>
       ),
     });
-  }, [navigate, navigation, setCount]);
+  }, [navigate, navigation]);
 
   const searchMovies = async (pageNumber = 1) => {
-    // const { data } = await api.get<Movie[]>('discover/movie', {
     const response = await api.get('discover/movie', {
       params: {
         api_key: 'b97006b0440ca06b9e06743ce41b0426',
@@ -78,12 +65,6 @@ const MovieList: React.FC = ({ navigation }) => {
         page: pageNumber,
       },
     });
-
-    // const { page: number, results: Movies[], total_pages: number } = response;
-
-    // if (page > 1) {
-
-    // }
 
     setPage(response.data.page);
     setMovies(response.data.results);
@@ -115,46 +96,58 @@ const MovieList: React.FC = ({ navigation }) => {
   return (
     <>
       <ScrollView
+        accessible
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 8 }}
         showsVerticalScrollIndicator={false}
       >
-        <Container>
+        <Container accessible>
           {movies.map(movie => (
             <Card
+              accessibilityLabel="Click aqui para ir para detalhes do filme"
               key={movie.id}
               onPress={() => {
                 handleNavigateToDetailsPages(movie);
               }}
             >
-              <View>
+              <View accessible>
                 <Poster
+                  accessibilityHint={`poster do filme ${movie.title}`}
+                  accessibilityRole="image"
                   source={{
                     uri: `http://image.tmdb.org/t/p/w185${movie.poster_path}`,
                   }}
                 />
               </View>
-              <View style={{ flexShrink: 1, justifyContent: 'center' }}>
-                <Title>{movie.title}</Title>
+              <View
+                accessible
+                style={{ flexShrink: 1, justifyContent: 'center' }}
+              >
+                <Title
+                  accessibilityHint={`título  do filme ${movie.title}`}
+                  accessibilityRole="text"
+                >
+                  {movie.title}
+                </Title>
               </View>
             </Card>
           ))}
         </Container>
       </ScrollView>
-      <ButtonsPages>
+      <ButtonsPages accessible>
         <ButtonPages
+          accessibilityLabel="Click aqui para ir para página anterior"
           style={page === 1 ? { width: 0, height: 0 } : null}
           onPress={() => {
             loadLess();
-            // this.props.navigation.navigate('Product', { product: item });
           }}
         >
           <ButtonPagesText>Voltar</ButtonPagesText>
         </ButtonPages>
         <ButtonPages
+          accessibilityLabel="Click aqui para ir para próxima página"
           style={page === totalPages ? { width: 0, height: 0 } : null}
           onPress={() => {
             loadMore();
-            // this.props.navigation.navigate('Product', { product: item });
           }}
         >
           <ButtonPagesText>Proximo</ButtonPagesText>
