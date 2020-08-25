@@ -1,15 +1,38 @@
 import styled from 'styled-components/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
+export const ViewPicker = styled.View`
+  background: #232129;
+  border-radius: 10px;
+  margin: 8px 16px;
+  height: 60px;
+  padding: 0 16px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ViewInput = styled.View`
+  height: 60px;
+  background: #232129;
+  padding: 0 16px;
+  border-radius: 10px;
+  margin: 8px 16px;
+
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const IconInput = styled(FeatherIcon)`
+  margin-right: 16px;
+`;
 
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: 'red',
 })`
-  border-radius: 15px;
-  background: #312e38;
-  margin: 16px;
+  flex: 1;
   color: #fff;
-  padding: 0 10px;
-  height: 50px;
+  font-size: 16px;
 `;
 
 export const Container = styled.View`
@@ -18,37 +41,27 @@ export const Container = styled.View`
   width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  /* background: #312e38; */
   justify-content: space-between;
 `;
 
 export const ViewPoster = styled.TouchableOpacity`
   flex-direction: column;
-  padding: 10px;
 `;
 
 export const Poster = styled.Image`
-  /* width: 100; */
-  /* height: 150; */
-  width: 150px;
-  height: 260px;
-  /* border-radius: 15px; */
-  /* left: 5px; */
+  width: 165px;
+  height: 248px;
   justify-content: center;
   align-items: center;
-  margin: 3px;
+  margin-bottom: 5px;
   background: #312e38;
-  /*  */
 `;
 
 export const Title = styled.Text`
   width: 100px;
   color: #f4ede8;
   margin: 0 6px;
-  /* padding: 2px; */
   font-size: 10px;
-  /* flex: 0.8; */
-  /* align-self: center; */
   flex-wrap: wrap;
 `;
 
@@ -59,21 +72,11 @@ export const ButtonsPages = styled.View`
   align-items: center;
   padding: 8px 16px ${16 + getBottomSpace()}px;
 `;
+
 export const ButtonPages = styled.TouchableOpacity`
   border-radius: 10px;
   width: 100px;
   height: 40px;
-  /* padding: 30px; */
-  background: #e50914;
-  justify-content: center;
-  align-items: center;
-`;
-export const ButtonSearchPages = styled.TouchableOpacity`
-  border-radius: 10px;
-  width: 100px;
-  height: 40px;
-  margin-left: 20px;
-  /* padding: 30px; */
   background: #e50914;
   justify-content: center;
   align-items: center;

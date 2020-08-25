@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import api from '../../services/api';
-
 import {
+  ViewInput,
+  IconInput,
   Input,
   Container,
   ViewPoster,
   Poster,
-  Title,
   ButtonsPages,
   ButtonPages,
   ButtonPagesText,
@@ -60,6 +60,10 @@ const genreName = [
     name: 'drama',
   },
   {
+    id: 27,
+    name: 'terror',
+  },
+  {
     id: 10751,
     name: 'familia',
   },
@@ -71,10 +75,7 @@ const genreName = [
     id: 36,
     name: 'historia',
   },
-  {
-    id: 27,
-    name: 'terror',
-  },
+
   {
     id: 10402,
     name: 'musica',
@@ -211,14 +212,18 @@ const MovieSearch: React.FC = () => {
 
   return (
     <>
-      <View accessible>
+      <ViewInput accessible>
+        <IconInput
+          name="search"
+          size={20}
+          color="#fff"
+          style={{ paddingRight: 16, color: 'white' }}
+        />
         <Input
-          style={{ color: '#fff' }}
           placeholder="Busca filme ou gênero"
           onChangeText={string => searchMovies(string, page)}
         />
-      </View>
-
+      </ViewInput>
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 8 }}
         showsVerticalScrollIndicator={false}
@@ -227,8 +232,6 @@ const MovieSearch: React.FC = () => {
           {movies.map(movie => (
             <ViewPoster
               accessible
-              // accessibilityLabel="Click aqui para ir para detalhes do filme"
-              // accessibilityHint="Click aqui para ir para detalhes do filme"
               key={movie.id}
               onPress={() => {
                 handleNavigateToDetailsPages(movie);
@@ -242,12 +245,6 @@ const MovieSearch: React.FC = () => {
                   uri: `http://image.tmdb.org/t/p/w500${movie.poster_path}`,
                 }}
               />
-              <Title
-                accessibilityHint={`título  do filme ${movie.title}`}
-                accessibilityRole="text"
-              >
-                {movie.title}
-              </Title>
             </ViewPoster>
           ))}
         </Container>

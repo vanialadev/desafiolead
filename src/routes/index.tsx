@@ -1,14 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 
-import {
-  View,
-  Text,
-  Button,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
 import MovieList from '../pages/MoveList';
 import MovieDetails from '../pages/MovieDetails';
 import MovieSearch from '../pages/MovieSearch';
@@ -16,8 +8,6 @@ import MovieSearch from '../pages/MovieSearch';
 const { Navigator, Screen } = createStackNavigator();
 
 const MovieRoutes: React.FC = () => {
-  // const { navigate } = useNavigation();
-
   return (
     <Navigator
       screenOptions={{
@@ -36,7 +26,7 @@ const MovieRoutes: React.FC = () => {
           headerStyle: {
             backgroundColor: '#E50914',
           },
-          headerTitle: 'Lista de Filmes',
+          headerTitle: 'Populares',
         }}
       />
       <Screen

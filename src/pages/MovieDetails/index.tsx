@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { Image, View, ScrollView, TouchableOpacity, Text } from 'react-native';
-import logoImg from '../../assets/logo.png';
+import { ScrollView } from 'react-native';
 
 import api from '../../services/api';
 
@@ -36,15 +35,12 @@ interface Movie {
 }
 
 const MovieDetails: React.FC = ({ route }) => {
-  const { navigate } = useNavigation();
-  // console.log(navigation);
   const { id } = route.params.movie;
   const [movie, setMovie] = useState<Movie>({} as Movie);
 
   useEffect(() => {
     const showMovie = async () => {
       console.log(1);
-      // const { data } = await api.get<Movie[]>('discover/movie', {
       const { data } = await api.get<Movie>(`movie/${id}`, {
         params: {
           api_key: 'b97006b0440ca06b9e06743ce41b0426',
