@@ -4,10 +4,11 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 export const Poster = styled.Image`
   width: 100%;
   height: 250px;
+  background: #312e38;
+
 `;
 
 export const Title = styled.Text`
-  font-size: 24px;
   color: #f4ede8;
   padding: 15px 16px;
   font-size: 30px;

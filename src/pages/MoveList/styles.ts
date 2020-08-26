@@ -25,8 +25,8 @@ export const Poster = styled.Image`
 `;
 
 export const Title = styled.Text`
-         color: #f4ede8;
-  margin: 0 6px;
+  color: #f4ede8;
+  margin: 6px 12px;
   font-size: 18px;
   flex-wrap: wrap;
 `;

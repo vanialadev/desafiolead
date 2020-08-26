@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native';
+import { ScrollView, Platform, KeyboardAvoidingView} from 'react-native';
 import { genres } from '../../utils/genres';
 import api from '../../services/api';
 import {
@@ -127,6 +127,10 @@ const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
 
   return (
     <>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
       <ViewInput accessible>
         <IconInput
           name="search"
@@ -135,12 +139,16 @@ const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
           style={{ paddingRight: 16, color: 'white' }}
         />
         <Input
+          autoFocus={true}
           defaultValue={search}
           placeholder="Busca filme ou gênero"
+          returnKeyType="send"
+          keyboardAppearance="dark"
           onChangeText={string => searchMovies(string, page)}
         />
       </ViewInput>
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 8 }}
         showsVerticalScrollIndicator={false}
       >
@@ -165,6 +173,8 @@ const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
           ))}
         </Container>
       </ScrollView>
+      </KeyboardAvoidingView>
+
       <ButtonPage
         page={page}
         totalPages={totalPages}

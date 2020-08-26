@@ -82,7 +82,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ route }) => {
             color="#E50914"
             accessibilityHint="média de avaliação"
           />
-          <AverageText>{movie.vote_average}</AverageText>
+          <AverageText>{Number(movie.vote_average).toFixed(1)}</AverageText>
         </Rating>
         <Popularity>
           <Icon
