@@ -31,11 +31,13 @@ const MovieScreen = ({ navigation: {openDrawer} }) => (
         headerTitle: 'Populares',
         headerLeft: () => <Icon
             name="menu"
+            accessibilityRole="menu"
             size={20}
             color="#fff"
             style={{ paddingLeft: 16 }}
             onPress={() => openDrawer()}
-          />,
+            accessibilityLabel="Click aqui para abrir o menu"
+        />,
       }}
     />
     <Screen
@@ -52,11 +54,13 @@ const MovieScreen = ({ navigation: {openDrawer} }) => (
       options={{
         headerLeft: () => <Icon
             name="menu"
+            accessibilityRole="menu"
             size={20}
             color="#fff"
             style={{ paddingLeft: 16 }}
             onPress={() => openDrawer()}
-          />,
+            accessibilityLabel="Click aqui para abrir o menu"
+        />,
       }}
     />
   </Navigator>

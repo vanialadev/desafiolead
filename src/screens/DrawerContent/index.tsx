@@ -18,12 +18,10 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
               label="Populares"
               onPress={() => navigation.navigate('MovieList')}
               inactiveTintColor="#fff"
-              // activeTintColor="#000"
-
             />
           </View>
-
-          <View>
+          <View accessible
+                accessibilityLabel="Gêneros dos filmes">
             <ViewDrawerItem>
             {genres.map(genre => (
               <DrawerItem
@@ -32,19 +30,11 @@ const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
                 onPress={() => navigation.navigate('Busca', {
                     genre,
                 })}
-                // inactiveBackgroundColor={genre.color}
                 inactiveTintColor="#fff"
-                // labelStyle={{
-                //   borderWidth: 1,
-                //   borderColor: '#f00',
-                //   borderRadius: 12,
-                //   padding: 1,
-                // }}
               />
             ))}
             </ViewDrawerItem>
           </View>
-
       </DrawerContentScrollView>
     </Container>
   );

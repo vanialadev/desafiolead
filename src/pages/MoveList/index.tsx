@@ -9,6 +9,7 @@ import {
   Card,
   Poster,
   Title,
+  ReleaseText,
 } from './styles';
 import ButtonPage from '../../components/ButtonsPages';
 import {api_key, include_adult, language, sort_by} from '../../utils/params';
@@ -66,8 +67,6 @@ const MovieList: React.FC<MovieListProps> = ({ navigation: {navigate, setOptions
 
     setPage(response.data.page);
     setMovies(response.data.results);
-    let data = response.data.results[0].release_date;
-    console.log(data, 's');
     setTotalPages(response.data.total_pages);
   };
   useEffect(() => {
@@ -102,7 +101,6 @@ const MovieList: React.FC<MovieListProps> = ({ navigation: {navigate, setOptions
       >
         <Container accessible>
           {movies.map(movie => {
-            console.log(movie);
             const [yyyy, mm, dd ] = movie.release_date.split('-');
 
             const data = `Lançamento: ${dd}/${mm}/${yyyy}`;
@@ -133,7 +131,7 @@ const MovieList: React.FC<MovieListProps> = ({ navigation: {navigate, setOptions
                 >
                   {movie.title}
                 </Title>
-                <Title>{data}</Title>
+                <ReleaseText>{data}</ReleaseText>
               </View>
             </Card>
           )})}

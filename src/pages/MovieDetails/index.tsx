@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-
 import { ScrollView } from 'react-native';
 
 import api from '../../services/api';
@@ -46,14 +44,12 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ route }) => {
 
   useEffect(() => {
     const showMovie = async () => {
-      console.log(1);
       const { data } = await api.get<Movie>(`movie/${id}`, {
         params: {
           api_key: api_key,
           language: language,
         },
       });
-      console.log(data);
       setMovie(data);
     };
     showMovie();
@@ -82,7 +78,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ route }) => {
             color="#E50914"
             accessibilityHint="média de avaliação"
           />
-          <AverageText>{Number(movie.vote_average).toFixed(1)}</AverageText>
+          <AverageText>{movie.vote_average && Number(movie.vote_average).toFixed(1)}</AverageText>
         </Rating>
         <Popularity>
           <Icon

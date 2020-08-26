@@ -9,7 +9,7 @@ export const Container = styled.View`
 export const Card = styled.TouchableOpacity`
   height: 150px;
   width: 100%;
-  border-radius: 15px;
+  border-radius: 4px;
   background: #312e38;
   flex-direction: row;
   margin-bottom: 20px;
@@ -18,8 +18,8 @@ export const Card = styled.TouchableOpacity`
 export const Poster = styled.Image`
   width: 100px;
   height: 150px;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
   justify-content: center;
   align-items: center;
 `;
@@ -28,5 +28,11 @@ export const Title = styled.Text`
   color: #f4ede8;
   margin: 6px 12px;
   font-size: 18px;
+  flex-wrap: wrap;
+`;
+export const ReleaseText = styled.Text`
+  color: #f4ede8;
+  margin: 6px 12px;
+  font-size: 14px;
   flex-wrap: wrap;
 `;

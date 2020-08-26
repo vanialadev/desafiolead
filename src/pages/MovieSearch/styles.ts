@@ -48,7 +48,7 @@ export const ViewPoster = styled.TouchableOpacity`
 `;
 
 export const Poster = styled.Image`
-  width: 165px;
+  width: 160px;
   height: 248px;
   justify-content: center;
   align-items: center;

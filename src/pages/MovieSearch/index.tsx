@@ -19,6 +19,18 @@ interface MovieSearchProps {
   route: any;
 }
 
+interface accentsMapObject {
+  a: string;
+  e: string;
+  i: string;
+  o: string;
+  u: string;
+  c: string;
+  n: string;
+  [key: string]: string;
+}
+
+
 const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
   const { navigate } = useNavigation();
 
@@ -36,8 +48,8 @@ const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
         }
       }, [id]);
 
-  const removeAccentuation = (str: string) => {
-    const accentsMap = {
+  const removeAccentuation= (str: string) => {
+    const accentsMap: accentsMapObject  = {
       a: 'á|à|ã|â|À|Á|Ã|Â',
       e: 'é|è|ê|É|È|Ê',
       i: 'í|ì|î|Í|Ì|Î',
@@ -164,6 +176,7 @@ const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
               <Poster
                 accessible
                 accessibilityHint={`poster do filme ${movie.title}`}
+                accessibilityRole="button"
                 key={movie.id}
                 source={{
                   uri: `http://image.tmdb.org/t/p/w500${movie.poster_path}`,
