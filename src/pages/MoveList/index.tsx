@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { View, ScrollView, TouchableWithoutFeedback } from 'react-native';
@@ -10,12 +9,11 @@ import {
   Card,
   Poster,
   Title,
-  ButtonsPages,
-  ButtonPages,
-  ButtonPagesText,
 } from './styles';
+import ButtonPage from '../../components/ButtonsPages';
+import {api_key, include_adult, language, sort_by} from '../../utils/params';
 
-interface Movie {
+export interface Movie {
   popularity: number;
   id: number;
   vote_average: number;
@@ -24,22 +22,19 @@ interface Movie {
   title: string;
   backdrop_path: string;
   genre_ids: Array<number>;
-  release_date: Date;
+  release_date: string;
+}
+interface MovieListProps {
+  navigation: any;
 }
 
-interface Genre {
-  id: number;
-  name: string;
-}
-
-const MovieList: React.FC = ({ navigation }) => {
-  const { navigate } = useNavigation();
+const MovieList: React.FC<MovieListProps> = ({ navigation: {navigate, setOptions} }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   React.useLayoutEffect(() => {
-    navigation.setOptions({
+    setOptions({
       headerRight: () => (
         <TouchableWithoutFeedback
           onPress={() => navigate('Busca',{
@@ -56,15 +51,15 @@ const MovieList: React.FC = ({ navigation }) => {
         </TouchableWithoutFeedback>
       ),
     });
-  }, [navigate, navigation]);
+  }, [navigate]);
 
   const searchMovies = async (pageNumber = 1) => {
     const response = await api.get('discover/movie', {
       params: {
-        api_key: 'b97006b0440ca06b9e06743ce41b0426',
-        language: 'pt-BR',
-        sort_by: 'popularity.desc',
-        include_adult: 'false',
+        api_key: api_key,
+        language: language,
+        sort_by: sort_by,
+        include_adult: include_adult,
         page: pageNumber,
       },
     });
@@ -106,7 +101,12 @@ const MovieList: React.FC = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
       >
         <Container accessible>
-          {movies.map(movie => (
+          {movies.map(movie => {
+            console.log(movie);
+            const [yyyy, mm, dd ] = movie.release_date.split('-');
+
+            const data = `Lançamento: ${dd}/${mm}/${yyyy}`;
+            return(
             <Card
               accessibilityLabel="Click aqui para ir para detalhes do filme"
               key={movie.id}
@@ -133,35 +133,13 @@ const MovieList: React.FC = ({ navigation }) => {
                 >
                   {movie.title}
                 </Title>
-                {/*<Title>*/}
-                {/*  {movie => <Title>{movie.title}</Title>}*/}
-                {/*</Title>*/}
-
+                <Title>{data}</Title>
               </View>
             </Card>
-          ))}
+          )})}
         </Container>
       </ScrollView>
-      <ButtonsPages accessible>
-        <ButtonPages
-          accessibilityLabel="Click aqui para ir para página anterior"
-          style={page === 1 ? { width: 0, height: 0 } : null}
-          onPress={() => {
-            loadLess();
-          }}
-        >
-          <ButtonPagesText>Voltar</ButtonPagesText>
-        </ButtonPages>
-        <ButtonPages
-          accessibilityLabel="Click aqui para ir para próxima página"
-          style={page === totalPages ? { width: 0, height: 0 } : null}
-          onPress={() => {
-            loadMore();
-          }}
-        >
-          <ButtonPagesText>Proximo</ButtonPagesText>
-        </ButtonPages>
-      </ButtonsPages>
+      <ButtonPage page={page} totalPages={totalPages} loadLess={loadLess} loadMore={loadMore} />
     </>
   );
 };

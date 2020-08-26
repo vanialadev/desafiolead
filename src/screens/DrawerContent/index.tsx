@@ -5,14 +5,18 @@ import { genres } from '../../utils/genres';
 
 import { Container, DrawerItemStyle, ViewDrawerItem } from './styles';
 
-const DrawerContent: React.FC = props => {
+interface DrawerContentProps {
+  navigation: any;
+}
+
+const DrawerContent: React.FC<DrawerContentProps> = ({navigation}) => {
   return (
     <Container>
       <DrawerContentScrollView>
           <View>
             <DrawerItemStyle
               label="Populares"
-              onPress={() => props.navigation.navigate('MovieList')}
+              onPress={() => navigation.navigate('MovieList')}
               inactiveTintColor="#fff"
               // activeTintColor="#000"
 
@@ -25,7 +29,7 @@ const DrawerContent: React.FC = props => {
               <DrawerItem
                 key={genre.id}
                 label={genre.name}
-                onPress={() => props.navigation.navigate('Busca', {
+                onPress={() => navigation.navigate('Busca', {
                     genre,
                 })}
                 // inactiveBackgroundColor={genre.color}

@@ -10,51 +10,31 @@ import {
   Container,
   ViewPoster,
   Poster,
-  ButtonsPages,
-  ButtonPages,
-  ButtonPagesText,
 } from './styles';
+import {Movie} from '../MoveList';
+import ButtonPage from '../../components/ButtonsPages';
+import {api_key, include_adult, language, sort_by} from '../../utils/params';
 
-interface Movie {
-  popularity: number;
-  id: number;
-  vote_average: number;
-  poster_path: string;
-  overview: string;
-  title: string;
-  backdrop_path: string;
-  genre_ids: Array<number>;
+interface MovieSearchProps {
+  route: any;
 }
 
-interface Genre {
-  id: number;
-  name: string;
-  nameSearch: string;
-}
-
-const MovieSearch: React.FC = ({ route }) => {
+const MovieSearch: React.FC<MovieSearchProps> = ({ route }) => {
   const { navigate } = useNavigation();
 
-  // console.log(route);
-  let {name, id, nameSearch} = route.params.genre;
+  let {name, id} = route.params.genre;
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState('');
 
-
-
       useEffect(() => {
-        console.log('useeffer');
         if (id !== undefined) {
-          console.log('entrou1');
           setSearch(name);
           searchMoviesByGenres(1, id);
         }
-      }, [id, name]);
-
-
+      }, [id]);
 
   const removeAccentuation = (str: string) => {
     const accentsMap = {
@@ -67,23 +47,22 @@ const MovieSearch: React.FC = ({ route }) => {
       n: 'ñ|Ñ',
     };
     const word = Object.keys(accentsMap).reduce(
-      (acc, cur) => acc.replace(new RegExp(accentsMap[cur], 'g'), cur),
+      (acc, cur) => {
+        return acc.replace(new RegExp(accentsMap[cur], 'g'), cur);
+      },
       str,
     );
     return word.toLowerCase();
   };
 
   const searchMoviesByGenres = async (pageNumber = 1, id: number) => {
-    // const { data } = await api.get<Movie[]>('discover/movie', {
     try {
-      // console.log(nameSearch, 'teste');
-
       const response = await api.get('discover/movie', {
         params: {
-          api_key: 'b97006b0440ca06b9e06743ce41b0426',
-          language: 'pt-BR',
-          sort_by: 'popularity.desc',
-          include_adult: 'false',
+          api_key: api_key,
+          language: language,
+          sort_by: sort_by,
+          include_adult: include_adult,
           page: pageNumber,
           with_genres: id,
         },
@@ -91,7 +70,7 @@ const MovieSearch: React.FC = ({ route }) => {
       setMovies(response.data.results);
       setTotalPages(response.data.total_pages);
     } catch (error) {
-      console.log('erro genre');
+      setMovies([]);
     }
   };
 
@@ -99,10 +78,10 @@ const MovieSearch: React.FC = ({ route }) => {
     try {
       const response = await api.get('search/movie', {
         params: {
-          api_key: 'b97006b0440ca06b9e06743ce41b0426',
-          language: 'pt-BR',
-          sort_by: 'popularity.desc',
-          include_adult: 'false',
+          api_key: api_key,
+          language: language,
+          sort_by: sort_by,
+          include_adult: include_adult,
           page: pageNumber,
           query: stringSearch,
         },
@@ -111,7 +90,7 @@ const MovieSearch: React.FC = ({ route }) => {
       setMovies(response.data.results);
       setTotalPages(response.data.total_pages);
     } catch (error) {
-      console.log('erro title');
+      setMovies([]);
     }
   };
 
@@ -120,22 +99,18 @@ const MovieSearch: React.FC = ({ route }) => {
     setPage(pag);
 
     const stringSearch = removeAccentuation(stringInput);
+    const genreObject = genres.find(
+      genre => genre.nameSearch === stringSearch
+    );
 
-    console.log(stringSearch, 'word');
+    genreObject !== undefined
+      ? searchMoviesByGenres(pag, genreObject.id)
+      : searchMoviesByTitle(pag, stringSearch)
 
-    const genreObject = genres.find(genre => genre.nameSearch === stringSearch);
-    console.log(genreObject);
-
-    if (genreObject !== undefined) {
-      console.log(genreObject.id);
-      searchMoviesByGenres(pag, genreObject.id);
-    } else {
-      searchMoviesByTitle(pag, stringSearch);
-    }
   };
 
   const loadMore = () => {
-    if (page === totalPages) return;
+    if (page === totalPages) return
     searchMovies(search, page + 1);
   };
 
@@ -190,24 +165,11 @@ const MovieSearch: React.FC = ({ route }) => {
           ))}
         </Container>
       </ScrollView>
-      <ButtonsPages>
-        <ButtonPages
-          style={page === 1 ? { width: 0, height: 0 } : null}
-          onPress={() => {
-            loadLess();
-          }}
-        >
-          <ButtonPagesText>Voltar</ButtonPagesText>
-        </ButtonPages>
-        <ButtonPages
-          style={page === totalPages ? { width: 0, height: 0 } : null}
-          onPress={() => {
-            loadMore();
-          }}
-        >
-          <ButtonPagesText>Proximo</ButtonPagesText>
-        </ButtonPages>
-      </ButtonsPages>
+      <ButtonPage
+        page={page}
+        totalPages={totalPages}
+        loadLess={loadLess}
+        loadMore={loadMore} />
     </>
   );
 };

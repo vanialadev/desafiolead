@@ -17,6 +17,7 @@ import {
   Genre,
   GenreText,
 } from './styles';
+import {api_key, language} from '../../utils/params';
 
 interface Genre {
   id: number;
@@ -31,10 +32,15 @@ interface Movie {
   overview: string;
   title: string;
   backdrop_path: string;
+  tagline: string;
   genres: Genre[];
 }
 
-const MovieDetails: React.FC = ({ route }) => {
+interface MovieDetailsProps {
+  route: any;
+}
+
+const MovieDetails: React.FC<MovieDetailsProps> = ({ route }) => {
   const { id } = route.params.movie;
   const [movie, setMovie] = useState<Movie>({} as Movie);
 
@@ -43,11 +49,11 @@ const MovieDetails: React.FC = ({ route }) => {
       console.log(1);
       const { data } = await api.get<Movie>(`movie/${id}`, {
         params: {
-          api_key: 'b97006b0440ca06b9e06743ce41b0426',
-          language: 'pt-BR',
+          api_key: api_key,
+          language: language,
         },
       });
-
+      console.log(data);
       setMovie(data);
     };
     showMovie();
