@@ -1,13 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/Feather';
+import { genreName } from '../utils/genres';
 
 import MovieList from '../pages/MoveList';
 import MovieDetails from '../pages/MovieDetails';
 import MovieSearch from '../pages/MovieSearch';
+import DrawerContent from '../screens/DrawerContent';
 
 const { Navigator, Screen } = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const MovieRoutes: React.FC = () => {
+const MovieListScreen = ({ navigation }) => {
   return (
     <Navigator
       screenOptions={{
@@ -27,6 +32,15 @@ const MovieRoutes: React.FC = () => {
             backgroundColor: '#E50914',
           },
           headerTitle: 'Populares',
+          headerLeft: () => (
+            <Icon
+              name="menu"
+              size={20}
+              color="#fff"
+              style={{ paddingLeft: 16 }}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         }}
       />
       <Screen
@@ -34,9 +48,34 @@ const MovieRoutes: React.FC = () => {
         component={MovieDetails}
         options={({ route }) => ({ title: route.params.name })}
       />
-
-      <Screen name="Busca" component={MovieSearch} />
+      <Screen
+        name="Busca"
+        component={MovieSearch}
+        options={{
+          headerLeft: () => (
+            <Icon
+              name="menu"
+              size={20}
+              color="#fff"
+              style={{ paddingLeft: 16 }}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
+        }}
+      />
     </Navigator>
+  );
+};
+
+
+const MovieRoutes: React.FC = () => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="MovieListScreen"
+      drawerContent={props => <DrawerContent {...props} />}
+    >
+      <Drawer.Screen name="Populares" component={MovieListScreen} />
+    </Drawer.Navigator>
   );
 };
 

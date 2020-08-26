@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
+import { genres } from '../../utils/genres';
 import api from '../../services/api';
 import {
   ViewInput,
@@ -28,97 +29,34 @@ interface Movie {
 interface Genre {
   id: number;
   name: string;
+  nameSearch: string;
 }
 
-const genreName = [
-  {
-    id: 28,
-    name: 'acao',
-  },
-  {
-    id: 12,
-    name: 'aventura',
-  },
-  {
-    id: 16,
-    name: 'animacao',
-  },
-  {
-    id: 35,
-    name: 'comedia',
-  },
-  {
-    id: 80,
-    name: 'crime',
-  },
-  {
-    id: 99,
-    name: 'documentario',
-  },
-  {
-    id: 18,
-    name: 'drama',
-  },
-  {
-    id: 27,
-    name: 'terror',
-  },
-  {
-    id: 10751,
-    name: 'familia',
-  },
-  {
-    id: 14,
-    name: 'fantasia',
-  },
-  {
-    id: 36,
-    name: 'historia',
-  },
-
-  {
-    id: 10402,
-    name: 'musica',
-  },
-  {
-    id: 9648,
-    name: 'misterio',
-  },
-  {
-    id: 10749,
-    name: 'romance',
-  },
-  {
-    id: 878,
-    name: 'ficcao cientifica',
-  },
-  {
-    id: 10770,
-    name: 'cinema tv',
-  },
-  {
-    id: 53,
-    name: 'thriller',
-  },
-  {
-    id: 10752,
-    name: 'guerra',
-  },
-  {
-    id: 37,
-    name: 'faroeste',
-  },
-];
-
-const MovieSearch: React.FC = () => {
+const MovieSearch: React.FC = ({ route }) => {
   const { navigate } = useNavigation();
+
+  // console.log(route);
+  let {name, id, nameSearch} = route.params.genre;
+
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState('');
 
+
+
+      useEffect(() => {
+        console.log('useeffer');
+        if (id !== undefined) {
+          console.log('entrou1');
+          setSearch(name);
+          searchMoviesByGenres(1, id);
+        }
+      }, [id, name]);
+
+
+
   const removeAccentuation = (str: string) => {
-    console.log('entrou');
     const accentsMap = {
       a: 'á|à|ã|â|À|Á|Ã|Â',
       e: 'é|è|ê|É|È|Ê',
@@ -138,6 +76,8 @@ const MovieSearch: React.FC = () => {
   const searchMoviesByGenres = async (pageNumber = 1, id: number) => {
     // const { data } = await api.get<Movie[]>('discover/movie', {
     try {
+      // console.log(nameSearch, 'teste');
+
       const response = await api.get('discover/movie', {
         params: {
           api_key: 'b97006b0440ca06b9e06743ce41b0426',
@@ -183,7 +123,7 @@ const MovieSearch: React.FC = () => {
 
     console.log(stringSearch, 'word');
 
-    const genreObject = genreName.find(genre => genre.name === stringSearch);
+    const genreObject = genres.find(genre => genre.nameSearch === stringSearch);
     console.log(genreObject);
 
     if (genreObject !== undefined) {
@@ -220,6 +160,7 @@ const MovieSearch: React.FC = () => {
           style={{ paddingRight: 16, color: 'white' }}
         />
         <Input
+          defaultValue={search}
           placeholder="Busca filme ou gênero"
           onChangeText={string => searchMovies(string, page)}
         />

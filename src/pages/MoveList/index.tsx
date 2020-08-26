@@ -24,6 +24,7 @@ interface Movie {
   title: string;
   backdrop_path: string;
   genre_ids: Array<number>;
+  release_date: Date;
 }
 
 interface Genre {
@@ -41,14 +42,16 @@ const MovieList: React.FC = ({ navigation }) => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableWithoutFeedback
-          onPress={() => navigate('Busca')}
+          onPress={() => navigate('Busca',{
+            genre: {},
+          })}
           accessibilityLabel="Click aqui para ir para página de busca"
         >
           <Icon
             name="search"
             size={20}
             color="#fff"
-            style={{ paddingRight: 16, color: 'white' }}
+            style={{ paddingRight: 16 }}
           />
         </TouchableWithoutFeedback>
       ),
@@ -68,6 +71,8 @@ const MovieList: React.FC = ({ navigation }) => {
 
     setPage(response.data.page);
     setMovies(response.data.results);
+    let data = response.data.results[0].release_date;
+    console.log(data, 's');
     setTotalPages(response.data.total_pages);
   };
   useEffect(() => {
@@ -128,6 +133,10 @@ const MovieList: React.FC = ({ navigation }) => {
                 >
                   {movie.title}
                 </Title>
+                {/*<Title>*/}
+                {/*  {movie => <Title>{movie.title}</Title>}*/}
+                {/*</Title>*/}
+
               </View>
             </Card>
           ))}
